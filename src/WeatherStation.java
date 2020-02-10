@@ -3,7 +3,7 @@
  *      Michael J. Lutz
  *
  * Other Contributers
- *Josip Muzic
+ *
  * Acknowledgements
  */
 
@@ -20,85 +20,86 @@
  * objects whenever its state changes. Convenience functions are provided
  * to access the temperature in different schemes (Celsius, Kelvin, etc.)
  */
-import java.util.Observable;
+import java.util.Observable ;
 
 public class WeatherStation extends Observable implements Runnable {
 
-    private final KelvinTempSensor sensor; // Temperature sensor.
-    private final Barometer barometer; // Temperature sensor.
+   private final KelvinTempSensor sensor ; // Temperature sensor.
+   private final Barometer barometer;
 
-    private final long PERIOD = 1000;      // 1 sec = 1000 ms
-    private final int KTOC = -27315;       // Kelvin to Celsius conversion.
+   private final long PERIOD = 1000 ;      // 1 sec = 1000 ms
+   private final int KTOC = -27315 ;       // Kelvin to Celsius conversion.
 
-    private int currentReading;
-    private double currentPressure;
+   private int currentReading ;
+   private double currentPressure;
 
-    /*
-     * When a WeatherStation object is created, it in turn creates the sensor
-     * object it will use.
-     */
-    public WeatherStation() {
-        sensor = new KelvinTempSensor();
-        barometer = new Barometer();
-        currentReading = sensor.reading();
-    }
+   /*
+    * When a WeatherStation object is created, it in turn creates the sensor
+    * object it will use.
+    */
+   public WeatherStation() {
+      sensor = new KelvinTempSensor() ;
+      currentReading = sensor.reading() ;
+      
+      barometer = new Barometer();
+      currentPressure = barometer.pressure();
+   }
+   
+   
+   /*
+    * The "run" method called by the enclosing Thread object when started.
+    * Repeatedly sleeps a second, acquires the current temperature from its
+    * sensor, and notifies registered Observers of the change.
+    */
+   public void run() {
+      while( true ) {
+         try {
+            Thread.sleep(PERIOD) ;
+         } catch (Exception e) {}    // ignore exceptions
+      
+         /*
+          * Get next reading and notify any Observers.
+          */
+         synchronized(this) {
+            currentReading = sensor.reading() ;
+         }
+         
+         synchronized(this) {
+            currentPressure = barometer.pressure();
+         }
+         
+         setChanged() ;
+         notifyObservers() ;
+      }
+   }
 
-    /*
-     * The "run" method called by the enclosing Thread object when started.
-     * Repeatedly sleeps a second, acquires the current temperature from its
-     * sensor, and notifies registered Observers of the change.
-     */
-    public void run() {
-        while( true ) {
-            try {
-                Thread.sleep(PERIOD);
-            } catch (Exception e) {}    // ignore exceptions
+   /*
+    * Return the current reading in degrees celsius as a
+    * double precision number.
+    */
+   public synchronized double getCelsius() {
+      return (currentReading + KTOC) / 100.0 ;
+   }
 
-            /*
-             * Get next reading and notify any Observers.
-             */
-            synchronized(this) {
-                currentReading = sensor.reading();
-                currentPressure = barometer.pressure();
-            }
-            setChanged();
-            notifyObservers();
-        }
-    }
-
-    /*
-     * Return the current reading in degrees Celsius as a
-     * double precision number.
-     */
-    public synchronized double getCelsius() {
-        return (currentReading + KTOC) / 100.0;
-    }
-
-    /*
-     * Return the current reading in degrees Kelvin as a
-     * double precision number.
-     */
-    public synchronized double getKelvin() {
-        return currentReading / 100.0;
-    }
-    
-    /*
-     * Return the current reading in degrees Fahrenheit as a
-     * double precision number.
-     */
-    public synchronized double getFahrenheit() {
-        return (getKelvin() - 273.15) * 9.0/5.0 + 32;
-    }
-
-    /*
-     * Return the current pressure in inches of mercury as a
-     * double precision number.
-     */
-    public synchronized double getInches() {
-        return currentPressure;
-    }
-
-    public synchronized double getMillibars() {
-        return currentPressure * 33.864;
-    }
+   /*
+    * Return the current reading in degrees Kelvin as a
+    * double precision number.
+    */
+   public synchronized double getKelvin() {
+      return currentReading / 100.0 ;
+   }
+   
+   
+   public synchronized double getFahrenheit() {
+      return currentReading / 100.0 * 1.8 - 459.67;
+   }
+   
+   public synchronized double getInches(){
+      return currentPressure;
+   }
+   
+   public synchronized double getMillibars(){
+      return currentPressure  * 33.864;
+   }
+   
 }

@@ -3,7 +3,7 @@
  *      Michael J. Lutz
  *
  * Other Contributers
- * Josip Muzic
+ *
  * Acknowledgements
  */
 
@@ -19,35 +19,46 @@ import java.util.Observer ;
 import java.util.Observable ;
 
 public class TextUI implements Observer {
-    private final WeatherStation station;
+   private final WeatherStation station ;
 
-    /*
-     * Remember the station we're attached to and
-     * add ourselves as an observer.
-     */
-    public TextUI(WeatherStation station) {
-        this.station = station;
-        this.station.addObserver(this);
-    }
+   /*
+    * Remember the station we're attached to and
+    * add ourselves as an observer.
+    */
+   public TextUI(WeatherStation station) {
+      this.station = station ;
+      this.station.addObserver(this) ;
+   }
 
-    /*
-     * Called when WeatherStation gets another reading.
-     * The Observable should be the station; the Object
-     * argument is ignored.
-     */
-    public void update(Observable obs, Object ignore) {
-        /*
-         * Check for spurious updates from unrelated objects.
-         */
-        if( station != obs ) {
-            return ;
-        }
-        /*
-         * Retrieve and print the temperatures.
-         */
-        System.out.printf(
-                "Reading is %6.2f degrees C, %6.2f degrees K, %6.2f degrees F, %6.2f pressure in inches, %6.2f pressure in millibars %n",
-                station.getCelsius(), station.getKelvin(), station.getFahrenheit(), station.getInches(), station.getMillibars());
-    }
+   /*
+    * Called when WeatherStation gets another reading.
+    * The Observable should be the station; the Object
+    * argument is ignored.
+    */
+   public void update(Observable obs, Object ignore) {
+      /*
+       * Check for spurious updates from unrelated objects.
+       */
+      if( station != obs ) {
+         return ;
+      }
+      /*
+       * Retrieve and print the temperatures.
+       */
+      System.out.printf(
+             "Reading is %6.2f degrees C and %6.2f degrees K and %6.2f degrees F and %6.2f inches and %6.2f millibars%n",
+             station.getCelsius(), station.getKelvin(), station.getFahrenheit(), station.getInches(), station.getMillibars()) ;
+   }
 
+   /*
+    * Start the application.
+    */
+   public static void main(String[] args) {
+      WeatherStation ws = new WeatherStation() ;
+      Thread thread = new Thread(ws) ;
+      TextUI ui = new TextUI(ws) ;
+      SwingUI sui = new SwingUI(ws);
+   
+      thread.start() ;
+   }
 }
