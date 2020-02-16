@@ -37,11 +37,11 @@ public class WeatherStation extends Observable implements Runnable {
     * When a WeatherStation object is created, it in turn creates the sensor
     * object it will use.
     */
-   public WeatherStation() {
-      sensor = new KelvinTempSensor() ;
+   public WeatherStation(ITempSensor isensor, IBarometer ibarometer) {
+      sensor = isensor ;
       currentReading = sensor.reading() ;
       
-      barometer = new Barometer();
+      barometer = ibarometer;
       currentPressure = barometer.pressure();
    }
    
@@ -106,7 +106,7 @@ public class WeatherStation extends Observable implements Runnable {
     * Start the application.
     */
     public static void main(String[] args) {
-      WeatherStation ws = new WeatherStation() ;
+      WeatherStation ws = new WeatherStation(new KelvinTempSensorAdapter(), new Barometer()) ;
       Thread thread = new Thread(ws) ;
       TextUI ui = new TextUI(ws) ;
       SwingUI sui = new SwingUI(ws);
