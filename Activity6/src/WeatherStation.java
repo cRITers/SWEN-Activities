@@ -24,8 +24,8 @@ import java.util.Observable ;
 
 public class WeatherStation extends Observable implements Runnable {
 
-   private final KelvinTempSensor sensor ; // Temperature sensor.
-   private final Barometer barometer;
+   private final ITempSensor sensor ; // Temperature sensor.
+   private final IBarometer barometer;
 
    private final long PERIOD = 1000 ;      // 1 sec = 1000 ms
    private final int KTOC = -27315 ;       // Kelvin to Celsius conversion.
