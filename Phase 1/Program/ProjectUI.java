@@ -10,6 +10,7 @@ import javafx.stage.FileChooser.*;
 import javafx.geometry.*;
 import java.io.*;
 import java.util.*;
+import javafx.scene.image.Image;
 
 public class ProjectUI extends Application {
       
@@ -21,69 +22,72 @@ public class ProjectUI extends Application {
    // MenuBar and Menu setup
    private MenuBar mBar = new MenuBar();
     
-   private Menu menu1 = new Menu("File");
+   private Menu menu = new Menu("File");
   
-   private MenuItem miNew = new MenuItem("New");
-   private MenuItem miOpen = new MenuItem("Open");
-   private MenuItem miSave = new MenuItem("Save");
-   private MenuItem miSaveAs = new MenuItem("Save As");
+   private MenuItem miAbout = new MenuItem("About");
    private MenuItem miExit = new MenuItem("Exit");
    
-   private FlowPane areaPane = new FlowPane();
-   private TextArea area1 = new TextArea();
-   private TextArea area2 = new TextArea();
+   // Initializing all objects for all pages
+   private FlowPane topPane = new FlowPane();
+   private FlowPane midPane = new FlowPane();
+   private FlowPane botPane = new FlowPane();
    
-   private FlowPane buttonPane = new FlowPane();
-   private Button log = new Button("Log");
-   private Button button = new Button("Button");
+   // Home page
+   private Label lblWelcome = new Label("Welcome, Domagoj!");   
+   // TODO: ADD GRAPH HERE IDK HOW BUT YOU GOT THIS
+   private TextArea testArea = new TextArea();
+   
+   private Button btnCatalog = new Button("View Catalog");
+   private Button btnTodaysLog = new Button("Todays Log");
     
    // Start method
    public void start(Stage _stage) {
+   
       stage = _stage;
-      stage.setTitle("ProjectUI");
+      stage.setTitle("jHealth");
+      
+      stage.getIcons().add(new Image("file:jhIcon.png"));
       
       // Adding Menu Items to the Menus
-      menu1.getItems().addAll(miNew, miOpen, miSave, miSaveAs, miExit);
+      menu.getItems().addAll(miAbout, miExit);
       
       // Adding the Menus to the Menu Bar
-      mBar.getMenus().addAll(menu1);
+      mBar.getMenus().add(menu);
       root = new VBox(mBar);
       
-      // Adding Actions to the buttons
-      ProjectMethods pm = new ProjectMethods(area1, area2, stage);
+      // Adding Actions to the menu items buttons
+      ProjectMethods pm = new ProjectMethods(root, stage);
       
-      miNew.setOnAction(pm);
-      miOpen.setOnAction(pm);
-      miSave.setOnAction(pm);
-      miSaveAs.setOnAction(pm);
+      miAbout.setOnAction(pm);
       miExit.setOnAction(pm);
-   
-      // Text Area features
-      area1.setPrefHeight(400);
-      area1.setPrefWidth(250);
-      area1.setFont(Font.font("Courier", 16));
-      area1.setWrapText(true);
+      btnCatalog.setOnAction(pm);
+      btnTodaysLog.setOnAction(pm);
+            
+      // Top FlowPane features
+      topPane.setAlignment(Pos.TOP_CENTER);
+      lblWelcome.setFont(new Font("Arial", 30));
+      topPane.getChildren().add(lblWelcome);
       
-      area2.setPrefHeight(400);
-      area2.setPrefWidth(250);
-      area2.setFont(Font.font("Courier", 16));
-      area2.setWrapText(true);
+      // TODO: GRAPH = Mid FlowPane, features
+      midPane.setAlignment(Pos.CENTER);
+      testArea.setPrefHeight(250);
+      testArea.setPrefWidth(350);
+      midPane.getChildren().add(testArea);
       
-      areaPane.getChildren().addAll(area1, area2);
       
-      // Flow Pane
-      buttonPane.setAlignment(Pos.CENTER);
-      buttonPane.setPadding(new Insets(20, 0, 0, 0));
-      buttonPane.setHgap(100);
-      buttonPane.getChildren().addAll(log, button);
+      // Bottom FlowPane features
+      botPane.setAlignment(Pos.BOTTOM_CENTER);
+      botPane.setPadding(new Insets(10, 0, 0, 0));
+      botPane.setHgap(100);
+      botPane.getChildren().addAll(btnCatalog, btnTodaysLog);
       
       // Making everything visible  
-      //root.setSpacing(10);
-      
-      root.getChildren().addAll(areaPane, buttonPane);                
-      scene = new Scene(root, 500, 500);
+      root.getChildren().addAll(topPane, midPane, botPane);     
+      root.setSpacing(10);           
+      scene = new Scene(root, 400, 400);
       stage.setScene(scene);
-      stage.show();           
+      stage.show();        
+         
    }
 
 }
