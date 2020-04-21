@@ -11,12 +11,13 @@ import javafx.geometry.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.image.Image;
+import java.util.ArrayList;
 
 public class ProjectUI extends Application {
    // Window setup
    Stage stage = null;
    Scene scene = null;
-   VBox root = null;
+   VBox root = new VBox(8);
 
    // MenuBar and Menu setup
    private MenuBar mBar = new MenuBar();
@@ -90,7 +91,7 @@ public class ProjectUI extends Application {
       });
 
       // Adding Actions to the menu items buttons
-      ProjectMethods pm = new ProjectMethods(root, stage);
+      ProjectMethods pm = new ProjectMethods(root, stage, scene);
       btnCatalog.setOnAction(pm);
       btnTodaysLog.setOnAction(pm);
 
