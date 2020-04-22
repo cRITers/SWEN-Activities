@@ -7,6 +7,14 @@ public class Food implements Item {
     private double carbs;
     private double protein;
 
+    public Food(String name, double calories, double fat, double carbs, double protein) {
+        this.name = name;
+        this.calories = calories;
+        this.fat = fat;
+        this.carbs = carbs;
+        this.protein = protein;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -47,16 +55,10 @@ public class Food implements Item {
         this.protein = protein;
     }
 
-
     @Override
     public String toString() {
-        return "{" +
-            " name='" + getName() + "'" +
-            ", calories='" + getCalories() + "'" +
-            ", fat='" + getFat() + "'" +
-            ", carbs='" + getCarbs() + "'" +
-            ", protein='" + getProtein() + "'" +
-            "}";
+        return "{" + " name='" + getName() + "'" + ", calories='" + getCalories() + "'" + ", fat='" + getFat() + "'"
+                + ", carbs='" + getCarbs() + "'" + ", protein='" + getProtein() + "'" + "}";
     }
 
 }

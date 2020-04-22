@@ -11,6 +11,8 @@ public class FileManager {
     private DataOutputStream out = null;
     private DataInputStream in = null;
 
+    private String catalogue = "";
+
     public FileManager() {
         try {
             out = new DataOutputStream(new FileOutputStream(LOG_DIRECTORY + FOOD_FILE_NAME, true));
@@ -37,16 +39,14 @@ public class FileManager {
         return writeLine(toPrint);
     }
 
-    public String getFromFoods() {
+    public String getCatalogue() {
         try {
-            String text = "";
             while (in.available() > 0) {
-                text += (char) in.read();
+                catalogue += (char) in.read();
             }
-            System.out.println("Called getFromFoods and got " + text);
-            return text;
+            return catalogue;
         } catch (Exception e) {
-            System.out.println("Error happened when trying using method getFromFoods: " + e.getMessage());
+            System.out.println("Error happened when trying using method getCatalogue: " + e.getMessage());
             return "error";
         }
     }

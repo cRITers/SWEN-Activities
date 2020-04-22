@@ -32,11 +32,12 @@ public class ProjectUI extends Application {
 
    // Home page
    private Label lblWelcome = new Label("Welcome, Domagoj!");
+   private Label lblWelcome2 = new Label("This is your todays log!");
    // TODO: ADD GRAPH HERE IDK HOW BUT YOU GOT THIS
    private TextArea testArea = new TextArea();
 
    private Button btnCatalog = new Button("View Catalog");
-   private Button btnTodaysLog = new Button("Todays Log");
+   private Button btnTodaysLog = new Button("Add New Log");
 
    // Start method
    public void start(Stage _stage) {
@@ -98,7 +99,9 @@ public class ProjectUI extends Application {
       // Top FlowPane features
       topPane.setAlignment(Pos.TOP_CENTER);
       lblWelcome.setFont(new Font("Arial", 30));
+      lblWelcome2.setFont(new Font("Arial", 30));
       topPane.getChildren().add(lblWelcome);
+      topPane.getChildren().add(lblWelcome2);
 
       // TODO: GRAPH = Mid FlowPane, features
       midPane.setAlignment(Pos.CENTER);
@@ -115,7 +118,7 @@ public class ProjectUI extends Application {
       // Making everything visible
       root.getChildren().addAll(topPane, midPane, botPane);
       root.setSpacing(10);
-      scene = new Scene(root, 400, 400);
+      scene = new Scene(root, 400, 450);
       stage.setScene(scene);
       stage.show();
    }
